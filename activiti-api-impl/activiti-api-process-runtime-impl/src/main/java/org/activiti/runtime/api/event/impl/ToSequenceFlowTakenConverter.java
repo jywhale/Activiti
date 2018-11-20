@@ -28,13 +28,19 @@ public class ToSequenceFlowTakenConverter implements EventConverter<SequenceFlow
     @Override
     public Optional<SequenceFlowTakenEvent> from(ActivitiSequenceFlowTakenEvent internalEvent) {
         SequenceFlowImpl sequenceFlow = new SequenceFlowImpl(internalEvent.getSourceActivityId(),
-                                                             internalEvent.getTargetActivityId());
+                internalEvent.getTargetActivityId());
+
         sequenceFlow.setProcessDefinitionId(internalEvent.getProcessDefinitionId());
         sequenceFlow.setProcessInstanceId(internalEvent.getProcessInstanceId());
         sequenceFlow.setSourceActivityName(internalEvent.getSourceActivityName());
         sequenceFlow.setSourceActivityType(internalEvent.getSourceActivityType());
         sequenceFlow.setTargetActivityName(internalEvent.getTargetActivityName());
         sequenceFlow.setTargetActivityType(internalEvent.getTargetActivityType());
-        return Optional.of(new SequenceFlowTakenImpl(sequenceFlow));
+
+        SequenceFlowTakenImpl sequenceFlowTaken = new SequenceFlowTakenImpl(sequenceFlow);
+        sequenceFlowTaken.setProcessInstanceId(internalEvent.getProcessInstanceId());
+        sequenceFlowTaken.setProcessDefinitionId(internalEvent.getProcessDefinitionId());
+
+        return Optional.of(sequenceFlowTaken);
     }
 }
